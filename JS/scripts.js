@@ -13,7 +13,7 @@ $(document).ready(function(){
 	//==============================================================================
 	function getNowPlayingData(){
 		$.getJSON(nowPlayingURL, function(nowPlayingData){
-			// console.log(nowPlayingData);
+			//console.log(nowPlayingData);
 			//we needed to add .results because nowPlayingData is an array.
 			for(let i = 0; i<nowPlayingData.results.length; i++){
 				// w300 is how wide it is
@@ -25,7 +25,7 @@ $(document).ready(function(){
 				$.getJSON(thisMovieUrl, function(movieKey){
 					// console.log(i);
 					// console.log(thisMovieUrl)
-					// console.log(movieKey)
+					console.log(movieKey)
 
 					//Need to go to that specific movie's URL to get the genres associated with it. (movieKey.id)
 					// var getGenreNameUrl = apiBaseURL + 'movie/' +movieKey.id+ '?api_key=' + apiKey;
@@ -135,6 +135,7 @@ $(document).ready(function(){
 					var releaseDate = genreData.results[i].release_date;
 					var overview = genreData.results[i].overview;
 					var voteAverage = genreData.results[i].vote_average;				
+					console.log(movieKey.results[0])
 					var youtubeKey = movieKey.results[0].key;
 					var youtubeLink = 'https://www.youtube.com/watch?v='+youtubeKey;
 					var genreHTML = '';
