@@ -10,7 +10,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-mycursor.execute("CREATE DATABASE movieapp ")
+#mycursor.execute("CREATE DATABASE movieapp ")
 mycursor.execute("CREATE TABLE genres (id INT PRIMARY KEY, name VARCHAR(16))")
 sql ="INSERT INTO genres(id, name) VALUES(%s, %s) "
 val= [(28 , "action")
