@@ -20,8 +20,10 @@ img{
 }
 
 .eachMovie{
+	display: flex;
 	background-color: black;
 	color: white;
+
 }
 .btnModal{
 	background-color: black;

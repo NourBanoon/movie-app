@@ -1,4 +1,6 @@
 $(document).ready(function(){
+
+
 	// The base url for all API calls
 	var apiBaseURL = 'http://api.themoviedb.org/3/';
 
@@ -21,12 +23,10 @@ $(document).ready(function(){
 				// mid = movie ID
 				var thisMovieUrl = apiBaseURL+'movie/'+mid+'/videos?api_key=' + apiKey;
 				// console.log(i)
-
 				$.getJSON(thisMovieUrl, function(movieKey){
 					// console.log(i);
 					// console.log(thisMovieUrl)
-					console.log(movieKey)
-
+					//console.log(movieKey)
 					//Need to go to that specific movie's URL to get the genres associated with it. (movieKey.id)
 					// var getGenreNameUrl = apiBaseURL + 'movie/' +movieKey.id+ '?api_key=' + apiKey;
 					// console.log(getGenreNameUrl);
