@@ -11,24 +11,24 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 #mycursor.execute("CREATE DATABASE movieapp ")
-#mycursor.execute("CREATE TABLE genres (id INT PRIMARY KEY, name VARCHAR(16))")
-#sql ="INSERT INTO genres(id, name) VALUES(%s, %s) "
-#val= [(28 , "action")
-#    ,(12 , "adventure")
-#    ,(16 , "animation")
-#    ,(35 , "comedy")
-#    ,(80 , "crime")
-#    ,(18 , "drama")
-#    ,(10751 , "family")
-#    ,(14 , "fantasy")
-#    ,(36 , "history")
-#   ,(27 , "horror")
-#    ,(10402 , "music")
-#    ,(10749 , "romance")
-#    ,(878 , "science fiction")
-#    ,(53 , "thriller")]
-#mycursor.executemany(sql, val)
-#mydb.commit()
+mycursor.execute("CREATE TABLE genres (id INT PRIMARY KEY, name VARCHAR(16))")
+sql ="INSERT INTO genres(id, name) VALUES(%s, %s) "
+val= [(28 , "action")
+    ,(12 , "adventure")
+    ,(16 , "animation")
+    ,(35 , "comedy")
+    ,(80 , "crime")
+    ,(18 , "drama")
+    ,(10751 , "family")
+    ,(14 , "fantasy")
+    ,(36 , "history")
+   ,(27 , "horror")
+    ,(10402 , "music")
+    ,(10749 , "romance")
+    ,(878 , "science fiction")
+    ,(53 , "thriller")]
+mycursor.executemany(sql, val)
+mydb.commit()
 
 apiKey="?api_key=<api-key-value>"
 apiBaseURL = 'http://api.themoviedb.org/3/movie/'
