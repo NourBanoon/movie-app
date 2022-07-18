@@ -2,9 +2,6 @@
 require_once 'scripts/config.php';
 
 //$sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview, genre.name FROM movies JOIN genres ON genres.id=movies.genre_id ;";
-$sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies ORDER BY release_date DESC LIMIT 100 ;";
-
-$query=mysqli_query($db,$sql);
 
 
 
@@ -33,19 +30,113 @@ $query=mysqli_query($db,$sql);
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<!-- CUSTOM JS -->
 	<script type="text/javascript" src="scripts/config.js"></script>
-	<script type="text/javascript" src="scripts/scripts.js"></script>
 	<script type="text/javascript" src="scripts/EventsHandler.js"></script>
     <script type="text/javascript">
         function getAllMovies(){
             let jstr = <?php
+                            $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies ORDER BY release_date DESC LIMIT 100 ;";
+                            $query=mysqli_query($db,$sql);
+                            
                             echo '[';
                             while ($fetch= mysqli_fetch_assoc($query)){
                                 echo json_encode($fetch).',';
                              }
                             echo "{}".']';
                        ?>;
-            allMovies(jstr)
+            getMovies(jstr)
         }
+
+        function setGenreId(id){
+          console.log(2)
+          if (id==28){
+            return <?php $gid=28;  
+                        $gName="Action";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==12){
+            return <?php $gid=12; 
+                          $gName="Adventure";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==16){
+            return <?php $gid=16; 
+                         $gName="Animation";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==35){
+            return <?php $gid=80; 
+                         $gName="Comedy";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==80){
+            return <?php $gid=28; 
+                         $gName="Crime";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==18){
+            return <?php $gid=18; 
+                         $gName="Drama";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==10751){
+            return <?php $gid=10751; 
+                         $gName="Family";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==14){
+            return <?php $gid=14; 
+                         $gName="Fantasy";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==36){
+            return <?php $gid=36; 
+                         $gName="History";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==27){
+            return <?php $gid=27; 
+                         $gName="Horror";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==10402){
+            return <?php $gid=10402; 
+                         $gName="Music";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id== 10749 ){
+            return <?php $gid=10749; 
+                         $gName="Romance";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==878){
+            return <?php $gid=878; 
+                         $gName="Science Fiction";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }else if(id==53){
+            return <?php $gid=53; 
+                         $gName="Thriller";
+                         echo '"'.$gName.'"';
+                         ?>;
+          }; 
+        }
+
+        function getMoviesGenres(id){
+          console.log(1)
+          var genreName=setGenreId(id);
+          let jstr = <?php  
+                  $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies WHERE genre_id=".$gid." ORDER BY release_date DESC LIMIT 100;";
+                  $query=mysqli_query($db,$sql);
+                  
+                  echo '[';
+                  while ($fetch= mysqli_fetch_assoc($query)){
+                      echo json_encode($fetch).',';
+                   }
+                  echo "{}".']';
+             ?>;
+          getMoviesByGenre(jstr,genreName);
+        }
+
     </script>
 
 </head>
@@ -69,14 +160,14 @@ $query=mysqli_query($db,$sql);
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#" id="movies" onClick=getAllMovies() >All Movies</a></li>
+        <li><a href="#" id="movies" onClick="getAllMovies()" >All Movies</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Genres<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#" class="action" id="action">Action</a></li>
-            <li><a href="#" class="adventure" id="adventure">Adventure</a></li>
-            <li><a href="#" class="animation" id="animation">Animation</a></li>
-            <li><a href="#" class="comedy" id="comedy">Comedy</a></li>
+            <li><a href="#" class="action"  id="action">Action</a></li>
+            <li><a href="#" class="adventure"  id="adventure">Adventure</a></li>
+            <li><a href="#" class="animation"  id="animation">Animation</a></li>
+            <li><a href="#" class="comedy"  id="comedy">Comedy</a></li>
             <li><a href="#" class="crime" id="crime">Crime</a></li>
             <li><a href="#" class="drama" id="drama">Drama</a></li>
             <li><a href="#" class="family" id="family">Family</a></li>
