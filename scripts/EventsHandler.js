@@ -3,6 +3,7 @@ var MoviesHTML = '';
    
 
 function getMoviesData(movies){   
+    MoviesHTML = ''
     let moviesData= movies
     //we //needed to add .results because moviesData is an array.
 

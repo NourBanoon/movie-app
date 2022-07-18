@@ -1,12 +1,7 @@
 <?php
 require_once 'scripts/config.php';
-
 //$sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview, genre.name FROM movies JOIN genres ON genres.id=movies.genre_id ;";
-
-
-
-
-?>
+?>;
 
 <!DOCTYPE html>
 <html>
@@ -34,7 +29,7 @@ require_once 'scripts/config.php';
     <script type="text/javascript">
         function getAllMovies(){
             let jstr = <?php
-                            $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies ORDER BY release_date DESC LIMIT 100 ;";
+                            $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies ORDER BY release_date DESC LIMIT 10 ;";
                             $query=mysqli_query($db,$sql);
                             
                             echo '[';
@@ -46,86 +41,23 @@ require_once 'scripts/config.php';
             getMovies(jstr)
         }
 
-        function setGenreId(id){
-          console.log(2)
-          if (id==28){
-            return <?php $gid=28;  
-                        $gName="Action";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==12){
-            return <?php $gid=12; 
-                          $gName="Adventure";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==16){
-            return <?php $gid=16; 
-                         $gName="Animation";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==35){
-            return <?php $gid=80; 
-                         $gName="Comedy";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==80){
-            return <?php $gid=28; 
-                         $gName="Crime";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==18){
-            return <?php $gid=18; 
-                         $gName="Drama";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==10751){
-            return <?php $gid=10751; 
-                         $gName="Family";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==14){
-            return <?php $gid=14; 
-                         $gName="Fantasy";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==36){
-            return <?php $gid=36; 
-                         $gName="History";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==27){
-            return <?php $gid=27; 
-                         $gName="Horror";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==10402){
-            return <?php $gid=10402; 
-                         $gName="Music";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id== 10749 ){
-            return <?php $gid=10749; 
-                         $gName="Romance";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==878){
-            return <?php $gid=878; 
-                         $gName="Science Fiction";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }else if(id==53){
-            return <?php $gid=53; 
-                         $gName="Thriller";
-                         echo '"'.$gName.'"';
-                         ?>;
-          }; 
-        }
-
+        function createCookie(name, value) {
+              var expires;
+              var date = new Date();
+              date.setTime(date.getTime() + (5 * 1000));
+              expires = "; expires=" + date.toGMTString();
+              document.cookie = escape(name) + "=" + 
+                  escape(value) + expires + "; path=/";
+          }
         function getMoviesGenres(id){
-          console.log(1)
-          var genreName=setGenreId(id);
-          let jstr = <?php  
-                  $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies WHERE genre_id=".$gid." ORDER BY release_date DESC LIMIT 100;";
+          var date = new Date();
+          date.setTime(date.getTime() + (5 * 1000));
+          console.log(id)
+          document.cookie="genid="+id+"; expires="+ date.toGMTString();
+        
+          var jstr = <?php  
+                  $gid=intval($_COOKIE["genid"]);
+                  $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies WHERE genre_id=$gid ORDER BY release_date DESC LIMIT 10;";
                   $query=mysqli_query($db,$sql);
                   
                   echo '[';
@@ -134,7 +66,15 @@ require_once 'scripts/config.php';
                    }
                   echo "{}".']';
              ?>;
-          getMoviesByGenre(jstr,genreName);
+          
+          var genreName=<?php 
+               $gid=intval($_COOKIE["genid"]);
+               $sql= "SELECT genres.name FROM genres WHERE id=$gid ;";
+               $query=mysqli_query($db,$sql);
+               $fetch= mysqli_fetch_assoc($query);
+               echo json_encode($fetch);
+          ?>;
+          getMoviesByGenre(jstr,genreName.name);
         }
 
     </script>
@@ -164,19 +104,20 @@ require_once 'scripts/config.php';
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Genres<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#" class="action"  id="action">Action</a></li>
-            <li><a href="#" class="adventure"  id="adventure">Adventure</a></li>
-            <li><a href="#" class="animation"  id="animation">Animation</a></li>
-            <li><a href="#" class="comedy"  id="comedy">Comedy</a></li>
-            <li><a href="#" class="crime" id="crime">Crime</a></li>
-            <li><a href="#" class="drama" id="drama">Drama</a></li>
-            <li><a href="#" class="family" id="family">Family</a></li>
-            <li><a href="#" class="fantasy" id="fantasy">Fantasy</a></li>
-            <li><a href="#" class="history" id="history">History</a></li>
-            <li><a href="#" class="music" id="music">Music</a></li>
-            <li><a href="#" class="romance" id="romance">Romance</a></li>
-            <li><a href="#" class="scifi" id="scifi">Science Fiction</a></li>
-            <li><a href="#" class="thriller" id="thriller">Thriller</a></li>
+            <li><a href="#" class="action" onClick="getMoviesGenres(28)" id="action">Action</a></li>
+            <li><a href="#" class="adventure" onClick="getMoviesGenres(12)" id="adventure">Adventure</a></li>
+            <li><a href="#" class="animation" onClick="getMoviesGenres(16)" id="animation">Animation</a></li>
+            <li><a href="#" class="comedy" onClick="getMoviesGenres(35)" id="comedy">Comedy</a></li>
+            <li><a href="#" class="crime" onClick="getMoviesGenres(80)" id="crime">Crime</a></li>
+            <li><a href="#" class="drama" onClick="getMoviesGenres(18)" id="drama">Drama</a></li>
+            <li><a href="#" class="family" onClick="getMoviesGenres(10751)" id="family">Family</a></li>
+            <li><a href="#" class="fantasy" onClick="getMoviesGenres(14)" id="fantasy">Fantasy</a></li>
+            <li><a href="#" class="history" onClick="getMoviesGenres(36)" id="history">History</a></li>
+            <li><a href="#" class="music" onClick="getMoviesGenres(10402)" id="music">Music</a></li>
+            <li><a href="#" class="romance" onClick="getMoviesGenres(10749)" id="romance">Romance</a></li>
+            <li><a href="#" class="horror" onClick="getMoviesGenres(27)" id="horror">Horror</a></li>
+            <li><a href="#" class="scifi" onClick="getMoviesGenres(878)" id="scifi">Science Fiction</a></li>
+            <li><a href="#" class="thriller" onClick="getMoviesGenres(53)" id="thriller">Thriller</a></li>
           </ul>
         </li>
         <li class="gitHubLogo">
