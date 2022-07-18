@@ -7,7 +7,7 @@ function getMoviesData(movies){
     let moviesData= movies
     //we //needed to add .results because moviesData is an array.
 
-    for(let i = 0; i<moviesData.length; i++){
+    for(let i = 0; i<moviesData.length-1; i++){
        
             // console.log(i);
             // console.log(thisMovieUrl)

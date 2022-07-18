@@ -1,25 +1,20 @@
 <?php
 require_once 'scripts/config.php';
-//$sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview, genre.name FROM movies JOIN genres ON genres.id=movies.genre_id ;";
+//$sql= "SELECT original_title, poster_path, vote_average, release_date, overview, genre.name FROM movies JOIN genres ON genres.id=genre_id ;";
 if(isset($_GET["genre"])){
   $gid=intval($_GET["genre"]);
-  $sql= "SELECT name FROM genres WHERE id=$gid ;";
-  $query=mysqli_query($db,$sql);
-  while ( $fetch= mysqli_fetch_assoc($query)){
-    $g_name=$fetch;
-    echo $fetch;
-  }
-  
-  $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies WHERE genre_id=$gid ORDER BY release_date DESC LIMIT 10;";
-                  
+  $gsql= "SELECT name FROM genres WHERE id=$gid ;";
+  $gquery=mysqli_query($db,$gsql);
 
+  $sql= "SELECT original_title, poster_path, vote_average, release_date, overview,  movie_url FROM movies WHERE genre_id=$gid ORDER BY release_date DESC LIMIT 10;";
+  $query=mysqli_query($db,$sql);        
 }else{
   $g_name= "All";
-  $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies ORDER BY release_date DESC LIMIT 10 ;";
+  $sql= "SELECT original_title, poster_path, vote_average, release_date, overview,  movie_url FROM movies ORDER BY release_date DESC LIMIT 10 ;";
+  $query=mysqli_query($db,$sql);  
 }
 
-$query=mysqli_query($db,$sql);
-?>;
+?>
 
 <!DOCTYPE html>
 <html>
@@ -45,11 +40,22 @@ $query=mysqli_query($db,$sql);
 	<script type="text/javascript" src="scripts/config.js"></script>
 	<script type="text/javascript" src="scripts/EventsHandler.js"></script>
     <script type="text/javascript">
+      window.onload = function() {
+         getPageMovies();
+        };
+
         function getPageMovies(){
-          let genrename=<?php echo json_encode($g_name) ;?>;
-          console.log(genrename)
-          let id=<?php echo $_GET["genre"]; ?>;
-          console.log(id)
+          let genrename=<?php 
+                          if(isset($_GET["genre"])){
+                              echo '['; 
+                              while($gfetch=mysqli_fetch_assoc($gquery) ){
+                                echo json_encode($gfetch).",";
+                              }
+                              echo '{}]'; 
+                          }else{
+                              echo '"'."All".'"';
+                          }
+                        ?>;
             let jstr = <?php
                             echo '[';
                             while ($fetch= mysqli_fetch_assoc($query)){
@@ -57,20 +63,8 @@ $query=mysqli_query($db,$sql);
                              }
                             echo "{}".']';
                        ?>;
-            getMovies(jstr,genrename)
-        }
-
-        function getAllMovies(){
-          let genrename="All"
-            let jstr = <?php
-                        $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies ORDER BY release_date DESC LIMIT 10 ;";           
-                        $query=mysqli_query($db,$sql);
-                        echo '[';
-                        while ($fetch= mysqli_fetch_assoc($query)){
-                        echo json_encode($fetch).',';
-                             }
-                            echo "{}".']';
-                       ?>;
+                       console.log(genrename)
+                       console.log(jstr)
             getMovies(jstr,genrename)
         }
 
@@ -97,24 +91,24 @@ $query=mysqli_query($db,$sql);
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#" id="movies" onClick="getAllMovies()" >All Movies</a></li>
+        <li><a href="http://localhost/movie-app/index.php" id="movies" >All Movies</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Genres<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#" class="action" onClick="getMoviesGenres(28)" id="action">Action</a></li>
-            <li><a href="#" class="adventure" onClick="getMoviesGenres(12)" id="adventure">Adventure</a></li>
-            <li><a href="#" class="animation" onClick="getMoviesGenres(16)" id="animation">Animation</a></li>
-            <li><a href="#" class="comedy" onClick="getMoviesGenres(35)" id="comedy">Comedy</a></li>
-            <li><a href="#" class="crime" onClick="getMoviesGenres(80)" id="crime">Crime</a></li>
-            <li><a href="#" class="drama" onClick="getMoviesGenres(18)" id="drama">Drama</a></li>
-            <li><a href="#" class="family" onClick="getMoviesGenres(10751)" id="family">Family</a></li>
-            <li><a href="#" class="fantasy" onClick="getMoviesGenres(14)" id="fantasy">Fantasy</a></li>
-            <li><a href="#" class="history" onClick="getMoviesGenres(36)" id="history">History</a></li>
-            <li><a href="#" class="music" onClick="getMoviesGenres(10402)" id="music">Music</a></li>
-            <li><a href="#" class="romance" onClick="getMoviesGenres(10749)" id="romance">Romance</a></li>
-            <li><a href="#" class="horror" onClick="getMoviesGenres(27)" id="horror">Horror</a></li>
-            <li><a href="#" class="scifi" onClick="getMoviesGenres(878)" id="scifi">Science Fiction</a></li>
-            <li><a href="#" class="thriller" onClick="getMoviesGenres(53)" id="thriller">Thriller</a></li>
+            <li><a href="#" class="action"  id="action">Action</a></li>
+            <li><a href="#" class="adventure"  id="adventure">Adventure</a></li>
+            <li><a href="#" class="animation"  id="animation">Animation</a></li>
+            <li><a href="#" class="comedy"  id="comedy">Comedy</a></li>
+            <li><a href="#" class="crime"  id="crime">Crime</a></li>
+            <li><a href="#" class="drama"  id="drama">Drama</a></li>
+            <li><a href="#" class="family"  id="family">Family</a></li>
+            <li><a href="#" class="fantasy"  id="fantasy">Fantasy</a></li>
+            <li><a href="#" class="history"  id="history">History</a></li>
+            <li><a href="#" class="music"  id="music">Music</a></li>
+            <li><a href="#" class="romance" id="romance">Romance</a></li>
+            <li><a href="#" class="horror"  id="horror">Horror</a></li>
+            <li><a href="#" class="scifi"  id="scifi">Science Fiction</a></li>
+            <li><a href="#" class="thriller" id="thriller">Thriller</a></li>
           </ul>
         </li>
         <li class="gitHubLogo">
@@ -161,10 +155,8 @@ $query=mysqli_query($db,$sql);
 			<div id="movie-grid">
 				 <!-- Jquery get us the movie posters! Need a place to put the poster images -->
 			</div>
+      
 		</div>
 	</div>
- <script type="text/javascript">
-  getPageMovies();
-  </script>
 </body>
 </html>
