@@ -87,15 +87,8 @@ function getMoviesData(movies){
     }
 }
 
-function getMovies(movies){
-    getMoviesData(movies);
-    document.getElementById('movie-grid').innerHTML=MoviesHTML
-    document.getElementById('movieGenreLabel').innerHTML="All Movies"
-    //$('#movie-grid').html(MoviesHTML);
-    //$('#movieGenreLabel').html("All Movies");
-}
 
-function getMoviesByGenre(movies,genreName){
+function getMovies(movies,genreName){
     console.log(3)
     getMoviesData(movies);
     document.getElementById('movie-grid').innerHTML=MoviesHTML

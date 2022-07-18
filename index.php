@@ -1,6 +1,24 @@
 <?php
 require_once 'scripts/config.php';
 //$sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview, genre.name FROM movies JOIN genres ON genres.id=movies.genre_id ;";
+if(isset($_GET["genre"])){
+  $gid=intval($_GET["genre"]);
+  $sql= "SELECT name FROM genres WHERE id=$gid ;";
+  $query=mysqli_query($db,$sql);
+  while ( $fetch= mysqli_fetch_assoc($query)){
+    $g_name=$fetch;
+    echo $fetch;
+  }
+  
+  $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies WHERE genre_id=$gid ORDER BY release_date DESC LIMIT 10;";
+                  
+
+}else{
+  $g_name= "All";
+  $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies ORDER BY release_date DESC LIMIT 10 ;";
+}
+
+$query=mysqli_query($db,$sql);
 ?>;
 
 <!DOCTYPE html>
@@ -27,64 +45,43 @@ require_once 'scripts/config.php';
 	<script type="text/javascript" src="scripts/config.js"></script>
 	<script type="text/javascript" src="scripts/EventsHandler.js"></script>
     <script type="text/javascript">
-        function getAllMovies(){
+        function getPageMovies(){
+          let genrename=<?php echo json_encode($g_name) ;?>;
+          console.log(genrename)
+          let id=<?php echo $_GET["genre"]; ?>;
+          console.log(id)
             let jstr = <?php
-                            $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies ORDER BY release_date DESC LIMIT 10 ;";
-                            $query=mysqli_query($db,$sql);
-                            
                             echo '[';
                             while ($fetch= mysqli_fetch_assoc($query)){
                                 echo json_encode($fetch).',';
                              }
                             echo "{}".']';
                        ?>;
-            getMovies(jstr)
+            getMovies(jstr,genrename)
         }
 
-        function createCookie(name, value) {
-              var expires;
-              var date = new Date();
-              date.setTime(date.getTime() + (5 * 1000));
-              expires = "; expires=" + date.toGMTString();
-              document.cookie = escape(name) + "=" + 
-                  escape(value) + expires + "; path=/";
-          }
-        function getMoviesGenres(id){
-          var date = new Date();
-          date.setTime(date.getTime() + (5 * 1000));
-          console.log(id)
-          document.cookie="genid="+id+"; expires="+ date.toGMTString();
-        
-          var jstr = <?php  
-                  $gid=intval($_COOKIE["genid"]);
-                  $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies WHERE genre_id=$gid ORDER BY release_date DESC LIMIT 10;";
-                  $query=mysqli_query($db,$sql);
-                  
-                  echo '[';
-                  while ($fetch= mysqli_fetch_assoc($query)){
-                      echo json_encode($fetch).',';
-                   }
-                  echo "{}".']';
-             ?>;
-          
-          var genreName=<?php 
-               $gid=intval($_COOKIE["genid"]);
-               $sql= "SELECT genres.name FROM genres WHERE id=$gid ;";
-               $query=mysqli_query($db,$sql);
-               $fetch= mysqli_fetch_assoc($query);
-               echo json_encode($fetch);
-          ?>;
-          getMoviesByGenre(jstr,genreName.name);
+        function getAllMovies(){
+          let genrename="All"
+            let jstr = <?php
+                        $sql= "SELECT movies.original_title, movies.poster_path, movies.vote_average, movies.release_date, movies.overview,  movies.movie_url FROM movies ORDER BY release_date DESC LIMIT 10 ;";           
+                        $query=mysqli_query($db,$sql);
+                        echo '[';
+                        while ($fetch= mysqli_fetch_assoc($query)){
+                        echo json_encode($fetch).',';
+                             }
+                            echo "{}".']';
+                       ?>;
+            getMovies(jstr,genrename)
         }
 
     </script>
 
 </head>
-<body>
+<body >
 	<!--  -->
 	<!-- Navbar -->
 	<!--  -->
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-inverse" >
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -153,16 +150,12 @@ require_once 'scripts/config.php';
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div id="Movies" style="display: none;">
-    <?php
-        echo json_encode($fetch); /* You have to escape because the result                                       will not be valid HTML otherwise. */
-    ?>
-</div>
 
 	<!-- Displaying the movies -->
 
-	<div class="container">
+	<div class="container" onLoang>
 		<div class="row">
+     
       <div class="genreLabel"><h1 id="movieGenreLabel"></h1></div>
         <!-- I need the h1 to change accordingly depending on what was clicked. -->
 			<div id="movie-grid">
@@ -170,6 +163,8 @@ require_once 'scripts/config.php';
 			</div>
 		</div>
 	</div>
-
+ <script type="text/javascript">
+  getPageMovies();
+  </script>
 </body>
 </html>
