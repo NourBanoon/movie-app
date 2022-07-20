@@ -9,22 +9,6 @@ function getMoviesData(movies){
 
     for(let i = 0; i<moviesData.length-1; i++){
        
-            // console.log(i);
-            // console.log(thisMovieUrl)
-            //Need to go to that specific movie's URL to get the genres associated with it. (movieKey.id)
-            // var getGenreNameUrl = apiBaseURL + 'movie/' +movieKey.id+ '?api_key=' + apiKey;
-            // console.log(getGenreNameUrl);
-            // console.log(movieKey.id);
-
-            // $.getJSON(getGenreNameUrl, function(genreNames){
-            // 	// console.log(genreNames);//an object
-            // 	// console.log(genreNames.genres[0].name);
-
-            // 	for (let j=0; j<genreNames.genres.length; j++){
-            // 		var genre = genreNames.genres[0].name;
-            // 		// console.log(genre);
-            // 	}
-            // })
             if(moviesData[i].poster_path){
                 var poster = imageBaseUrl+'w300'+moviesData[i].poster_path;
             }
@@ -38,14 +22,12 @@ function getMoviesData(movies){
             var releaseDate = moviesData[i].release_date;
 
             var overview = moviesData[i].overview;
-            // $('.overview').addClass('overview');
 
             var voteAverage = moviesData[i].vote_average;				
-            // console.log(movieKey)
+            
             var youtubeKey = moviesData[i].movie_url;
 
             var youtubeLink = 'https://www.youtube.com/watch?v='+youtubeKey;
-            // console.log(youtubeLink)
 
            
             // added in i to MoviesHTML. Without it, only the details for the first movie in the results display in the modal no matter which movie poster you click on.
@@ -79,20 +61,13 @@ function getMoviesData(movies){
             MoviesHTML += '</div>'; //close off each div
 
             
-            //$('#movie-grid').append(MoviesHTML);
-            //Without this line, there is nowhere for the posters and overviews to display so it doesn't show up 
-            //$('#movieGenreLabel').html("All Movies");
-            //h1 will change depending on what is clicked. Will display "Now Playing" in this case.
-        
+          
     }
 }
 
 
 function getMovies(movies,genreName){
-    console.log(3)
     getMoviesData(movies);
     document.getElementById('movie-grid').innerHTML=MoviesHTML
     document.getElementById('movieGenreLabel').innerHTML=genreName+" Movies"
-    //$('#movie-grid').html(MoviesHTML);
-    //$('#movieGenreLabel').html("All Movies");
-}
+ }
