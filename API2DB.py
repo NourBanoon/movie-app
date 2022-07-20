@@ -31,7 +31,7 @@ mycursor.executemany(sql, val)
 mydb.commit()
 
 
-apiKey="?api_key=6ba20f14e1dec2e39e2d3f60f951d49a"
+
 #apiKey="?api_key=<api-key-value>"
 apiBaseURL = 'http://api.themoviedb.org/3/movie/'
 
