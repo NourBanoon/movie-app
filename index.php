@@ -44,7 +44,6 @@ if(isset($_GET["genre"])){
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 	<!-- CUSTOM JS -->
-  <script type="text/javascript" src="scripts/config.js"></script>
 	<script type="text/javascript" src="scripts/EventsHandler.js"></script>
     <script type="text/javascript">
       window.onload = function() {
