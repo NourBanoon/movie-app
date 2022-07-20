@@ -43,7 +43,6 @@ function getMoviesData(movies){
                                 MoviesHTML += '<div class="movieName">'+title+'</div><br>';
                                 MoviesHTML += '<div class="linkToTrailer"><a href="'+youtubeLink+'"><span class="glyphicon glyphicon-play"></span>&nbspPlay trailer</a>' + '</div><br>';	
                                 MoviesHTML += '<div class="release">Release Date: '+releaseDate+'</div><br>';
-                                // MoviesHTML += '<div class="genre">Genre: '+genre+'</div><br>';
                                 MoviesHTML += '<div class="overview">' +overview+ '</div><br>';// Put overview in a separate div to make it easier to style
                                 MoviesHTML += '<div class="rating">Rating: '+voteAverage+ '/10</div><br>';
                                 MoviesHTML += '<div class="col-sm-3 btn btn-primary">8:30 AM' + '</div>';

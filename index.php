@@ -1,6 +1,5 @@
 <?php
 require_once 'scripts/config.php';
-//$sql= "SELECT original_title, poster_path, vote_average, release_date, overview, genre.name FROM movies JOIN genres ON genres.id=genre_id ;";
 if(isset($_GET["genre"])){
   $gid=$_GET["genre"];
   $gsql="SELECT genres.name FROM genres WHERE id= '$gid' ;";
@@ -15,20 +14,16 @@ if(isset($_GET["genre"])){
   $query=mysqli_query($db,$sql);  
 }else{
   $g_name= "All";
-  $sql= "SELECT original_title, poster_path, vote_average, release_date, overview,  movie_url FROM movies ORDER BY release_date DESC LIMIT 100;";
+  $sql= "SELECT original_title, poster_path, vote_average, release_date, overview,  movie_url FROM movies ORDER BY release_date DESC LIMIT 1000;";
   $query=mysqli_query($db,$sql);  
 }
-
-
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
 	
-	<title>Movie App</title>
-	
-	
+	<title>Movie App</title>	
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<!-- Optional theme -->
@@ -45,12 +40,12 @@ if(isset($_GET["genre"])){
 
 	<!-- CUSTOM JS -->
 	<script type="text/javascript" src="scripts/EventsHandler.js"></script>
-    <script type="text/javascript">
+  <script type="text/javascript">
       window.onload = function() {
          getPageMovies();
         };
         
-        function findMovie(){
+      function findMovie(){
             SearchText= document.getElementById('search-text').value;
             if(SearchText.replace(/\s+/g, ' ').trim()!=""){
               let baseurl=<?php echo '"'.$url.'"';?>;
